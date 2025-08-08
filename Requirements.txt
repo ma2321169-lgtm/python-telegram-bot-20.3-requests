@@ -1,0 +1,43 @@
+# Create project folder
+project_dir = "/mnt/data/trading_bot"
+os.makedirs(project_dir, exist_ok=True)
+
+# bot.py code
+bot_code = """import time
+
+def get_signal():
+    # Dummy signal generator
+    return "BUY" if int(time.time()) % 2 == 0 else "SELL"
+
+if __name__ == "__main__":
+    while True:
+        signal = get_signal()
+        print(f"Signal: {signal}")
+        time.sleep(5)
+"""
+
+# requirements.txt content
+requirements_code = "flask\nrequests\n"
+
+# README.md content
+readme_code = "# Trading Bot\n\nA simple trading bot example for deployment on Render."
+
+# Write files
+with open(os.path.join(project_dir, "bot.py"), "w") as f:
+    f.write(bot_code)
+
+with open(os.path.join(project_dir, "requirements.txt"), "w") as f:
+    f.write(requirements_code)
+
+with open(os.path.join(project_dir, "README.md"), "w") as f:
+    f.write(readme_code)
+
+# Create zip file
+zip_path = "/mnt/data/trading_bot.zip"
+with ZipFile(zip_path, "w") as zipf:
+    for root, _, files in os.walk(project_dir):
+        for file in files:
+            file_path = os.path.join(root, file)
+            zipf.write(file_path, os.path.basename(file_path))
+
+zip_path
